@@ -1,0 +1,1 @@
+Web App called “Cosmos Odyssey” that shows the best deals for our demanding customers in our solar system. Customers must be able to select travel between the different planets and the system should show possible routes-based prices. After careful consideration customer can choose to make a reservation to their name on a specific route.

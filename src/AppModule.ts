@@ -1,19 +1,29 @@
-import {Module} from '@nestjs/common';
+import {Module, ValidationPipe} from '@nestjs/common';
 import {AppController} from './api/AppController';
 import {HttpModule} from '@nestjs/axios';
-import {ConfigModule} from '@nestjs/config';
 import {TravelService} from './service/TravelService';
+import {APP_PIPE} from '@nestjs/core';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {Config} from './Config';
 
 @Module({
     imports: [
         HttpModule,
-        ConfigModule.forRoot()
+        TypeOrmModule.forRoot(<any>Config.db),
     ],
     controllers: [
         AppController
     ],
     providers: [
-        TravelService
+        TravelService,
+        {
+            provide: APP_PIPE,
+            useFactory: () => new ValidationPipe({
+                transform: true,
+                forbidUnknownValues: true,
+                validationError: {target: false}
+            })
+        },
     ],
 })
 export class AppModule { }

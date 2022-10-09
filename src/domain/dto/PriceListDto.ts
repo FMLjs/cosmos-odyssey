@@ -1,4 +1,5 @@
+import {IPriceList} from "src/interface/IPriceList";
+
 export class PriceListDto {
-    validUntil: Date;
-    originalResponse: Object;
+    response: IPriceList;
 }

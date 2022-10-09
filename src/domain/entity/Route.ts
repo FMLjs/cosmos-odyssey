@@ -4,10 +4,12 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     OneToOne,
     PrimaryColumn, UpdateDateColumn
 } from "typeorm";
 import {v4 as generateUuid} from "uuid";
+import {ProviderDto} from "../dto/ProviderDto";
 import {RouteDto} from "../dto/RouteDto";
 import {PriceList} from "./PriceList";
 import {Provider} from "./Provider";
@@ -24,7 +26,9 @@ export class Route {
     @Column()
     to: string;
 
-    @Column()
+    @Column({
+        type: 'bigint'
+    })
     distance: number;
 
     @CreateDateColumn({name: 'created_at'})
@@ -34,12 +38,23 @@ export class Route {
     updatedAt: Date;
 
     @ManyToOne(() => PriceList, (priceList) => priceList.routes)
+    @JoinColumn({ name: 'price_list_id' })
     priceList: PriceList;
-​
-    @OneToOne(() => Provider)
-    @JoinColumn()
-    provider: Provider;
-    
+
+    @OneToMany(() => Provider, c => c.route, {
+        cascade: true,
+        eager: true
+    })
+    providers: Provider[];
+
+    addProvider(providerDto: ProviderDto) {
+        const provider = Provider.create(providerDto);
+
+        this.providers.push(provider);
+
+        return provider;
+    }
+
     static create(context: RouteDto) {
         const {
             from,
@@ -52,6 +67,7 @@ export class Route {
         route.from = from;
         route.to = to;
         route.distance = distance;
+        route.providers = [];
 
         return route;
     }

@@ -21,12 +21,6 @@ export class PriceList {
     @Column({name: 'valid_until'})
     validUntil: Date;
 
-    @Column({
-        type: 'json',
-        name: 'original_response'
-    })
-    originalResponse: Object;
-
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
 
@@ -39,18 +33,6 @@ export class PriceList {
     })
     routes: Route[];
 
-    addRoute(routeDto: RouteDto) {
-        const route = Route.create(routeDto);
-
-        this.routes.push(route);
-
-        return this;
-    }
-
-    isActual() {
-        return new Date(this.validUntil).getTime() > new Date().getTime();
-    }
-
     @AfterLoad()
     afterLoad() {
         if (!this.routes) {
@@ -58,16 +40,27 @@ export class PriceList {
         }
     }
 
+    addRoute(routeDto: RouteDto) {
+        const route = Route.create(routeDto);
+
+        this.routes.push(route);
+
+        return route;
+    }
+
+    isActual() {
+        return new Date(this.validUntil).getTime() > new Date().getTime();
+    }
+    
     static create(context: PriceListDto) {
         const {
-            originalResponse,
-            validUntil
+            response,
         } = context;
 
         const priceList = new PriceList();
         
-        priceList.originalResponse = originalResponse;
-        priceList.validUntil = validUntil;
+        priceList.validUntil = response.validUntil;
+        priceList.routes = [];
 
         return priceList;
     }

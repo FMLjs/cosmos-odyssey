@@ -2,11 +2,14 @@ import {
     Column,
     CreateDateColumn,
     Entity, 
+    JoinColumn, 
+    ManyToOne, 
     PrimaryColumn, 
     UpdateDateColumn
-} from "typeorm";
-import {v4 as generateUuid} from "uuid";
-import {ProviderDto} from "../dto/ProviderDto";
+} from 'typeorm';
+import {v4 as generateUuid} from 'uuid';
+import {ProviderDto} from '../dto/ProviderDto';
+import {Route} from './Route';
 
 @Entity()
 export class Provider {
@@ -17,7 +20,9 @@ export class Provider {
     @Column({name: 'company_name'})
     companyName: string;
     
-    @Column()
+    @Column({
+        type: 'double precision'
+    })
     price: number;
 
     @Column({name: 'flight_start'})
@@ -31,6 +36,10 @@ export class Provider {
 
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
+
+    @ManyToOne(() => Route, (route) => route.providers)
+    @JoinColumn({ name: 'route_id' })
+    route: Route;
 
     static create(context: ProviderDto) {
         const {

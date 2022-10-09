@@ -1,20 +1,19 @@
 import {Body, Controller, Get} from '@nestjs/common';
-import {PriceList} from 'src/interface/PriceList';
 import {PriceListInputDto} from 'src/api/dto/PriceListInputDto';
-import {TravelService} from 'src/service/TravelService';
+import {PriceListService} from 'src/domain/service/PriceListService';
 
 @Controller()
 export class AppController {
     
     constructor(
-        private readonly travelService: TravelService
+        private readonly priceListService: PriceListService
+
     ) { }
 
     @Get('/price-list')
-    priceList(@Body() input: PriceListInputDto) {
-        console.log(input)
+    async priceList(@Body() input: PriceListInputDto) {
         try {
-            return this.travelService.getPriceList();
+            return this.priceListService.findLatest(input);
         } catch (e) {
             throw e
         }

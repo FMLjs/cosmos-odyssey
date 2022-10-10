@@ -1,5 +1,4 @@
-import {join} from "path";
-import {Env} from "./util/Env";
+import {Env} from "./utils/Env";
 
 export const Config = {
     apiUrl: Env.get<string>('COSMOS_ODYSSEY_URL'),

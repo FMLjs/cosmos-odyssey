@@ -48,7 +48,7 @@ export class PriceList {
         return route;
     }
 
-    isActual() {
+    isLatest() {
         return new Date(this.validUntil).getTime() > new Date().getTime();
     }
     

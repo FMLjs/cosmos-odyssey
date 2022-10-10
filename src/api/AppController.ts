@@ -12,10 +12,6 @@ export class AppController {
 
     @Get('/price-list')
     async priceList(@Body() input: PriceListInputDto) {
-        try {
-            return this.priceListService.findLatest(input);
-        } catch (e) {
-            throw e
-        }
+        return this.priceListService.findLatest(input);
     }
 }

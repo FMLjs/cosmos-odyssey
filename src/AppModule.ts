@@ -11,6 +11,7 @@ import {Provider} from './domain/entity/Provider';
 import {Route} from './domain/entity/Route';
 import {SourceRequest} from './domain/entity/SourceRequest';
 import {SourceRequestService} from './domain/service/SourceRequestService';
+import {PriceListDAO} from './domain/dao/PriceListDAO';
 
 @Module({
     imports: [
@@ -35,6 +36,7 @@ import {SourceRequestService} from './domain/service/SourceRequestService';
         TravelService,
         PriceListService,
         SourceRequestService,
+        PriceListDAO,
         {
             provide: APP_PIPE,
             useFactory: () => new ValidationPipe({

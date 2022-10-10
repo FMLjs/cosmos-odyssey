@@ -1,8 +1,10 @@
-import {Injectable} from "@nestjs/common";
+import {ForbiddenException, HttpException, Injectable} from "@nestjs/common";
 import {InjectRepository} from "@nestjs/typeorm";
 import {PriceListInputDto} from "src/api/dto/PriceListInputDto";
+import {InvalidArgumentError} from "src/error/InvalidArgumentError";
 import {TravelService} from "src/service/TravelService";
-import {Repository} from 'typeorm';
+import {EntityNotFoundError, Repository} from 'typeorm';
+import {PriceListDAO} from "../dao/PriceListDAO";
 import {PriceListDto} from "../dto/PriceListDto";
 import {PriceList} from "../entity/PriceList";
 import {SourceRequestService} from './SourceRequestService';
@@ -15,24 +17,31 @@ export class PriceListService {
         private readonly priceListRepository: Repository<PriceList>,
         private readonly sourceRequestService: SourceRequestService,
         private readonly travelService: TravelService,
+        private readonly priceListDao: PriceListDAO,
     ) { }
 
-    async findLatest(context: PriceListInputDto){
+    async findLatest(context: PriceListInputDto) {
         let priceList;
 
         try {
-            priceList = await this.priceListRepository.findOneOrFail({
-                order: {createdAt: 'DESC'}
-            });
+            priceList = await this.priceListDao.findOneLatestOrFail();
 
-            if(!priceList.isActual()) {
+            if (!priceList.isLatest()) {
                 throw new Error('Price list is outdated');
             }
-
         } catch (e) {
             const newPriceList = await this.travelService.getPriceList();
-            
+
             priceList = await this.create({response: newPriceList});
+        }
+
+        try {
+            priceList = await this.priceListDao.findOneByIdWithFilterOrFail(priceList.id, context);
+        } catch (e) {
+            InvalidArgumentError.ifThrow(
+                e instanceof EntityNotFoundError,
+                `Price list for input ${JSON.stringify(context)} not found`
+            );
         }
 
         return priceList;
@@ -42,9 +51,9 @@ export class PriceListService {
         const {
             response
         } = context;
-        
+
         const priceList = PriceList.create(context);
-        
+
         response.legs.forEach(({routeInfo, providers}) => {
             const addedRoute = priceList.addRoute({
                 from: routeInfo.from.name,

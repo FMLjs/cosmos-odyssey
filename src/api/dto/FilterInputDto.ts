@@ -12,9 +12,11 @@ export class SortInputDto {
 }
 
 export class FilterInputDto {
+    
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
-    readonly companyName: string;
+    readonly companyName?: string;
 
     @IsOptional()
     @Type(() => SortInputDto)

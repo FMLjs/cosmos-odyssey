@@ -1,15 +1,6 @@
 import {Type} from "class-transformer";
-import {IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested} from "class-validator";
-import {SortDirection} from "src/enum/SortDirection";
-import {SortField} from "src/enum/SortField";
-
-export class SortInputDto {
-    @IsEnum(SortField)
-    readonly field: SortField;
-
-    @IsEnum(SortDirection)
-    readonly direction: SortDirection
-}
+import {IsNotEmpty, IsOptional, IsString, ValidateNested} from "class-validator";
+import {SortInputDto} from "./SortInputDto";
 
 export class FilterInputDto {
     

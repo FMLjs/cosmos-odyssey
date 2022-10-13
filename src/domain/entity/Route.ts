@@ -1,18 +1,12 @@
 import {
+    AfterLoad,
     Column,
     CreateDateColumn,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    OneToMany,
-    OneToOne,
-    PrimaryColumn, UpdateDateColumn
+    Entity, OneToMany, PrimaryColumn, UpdateDateColumn
 } from "typeorm";
 import {v4 as generateUuid} from "uuid";
-import {ProviderDto} from "../dto/ProviderDto";
 import {RouteDto} from "../dto/RouteDto";
-import {PriceList} from "./PriceList";
-import {Provider} from "./Provider";
+import {RouteProvider} from './RouteProvider';
 
 @Entity()
 export class Route {
@@ -26,9 +20,7 @@ export class Route {
     @Column()
     to: string;
 
-    @Column({
-        type: 'bigint'
-    })
+    @Column({type: 'bigint'})
     distance: number;
 
     @CreateDateColumn({name: 'created_at'})
@@ -37,24 +29,16 @@ export class Route {
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
 
-    @ManyToOne(() => PriceList, (priceList) => priceList.routes)
-    @JoinColumn({ name: 'price_list_id' })
-    priceList: PriceList;
+    @OneToMany(() => RouteProvider, routeProvider => routeProvider.route)
+    routeProviders: RouteProvider[];
 
-    @OneToMany(() => Provider, c => c.route, {
-        cascade: true,
-        eager: true
-    })
-    providers: Provider[];
-
-    addProvider(providerDto: ProviderDto) {
-        const provider = Provider.create(providerDto);
-
-        this.providers.push(provider);
-
-        return provider;
+    @AfterLoad()
+    afterLoad() {
+        if (!this.routeProviders) {
+            this.routeProviders = [];
+        }
     }
-
+    
     static create(context: RouteDto) {
         const {
             from,
@@ -63,11 +47,10 @@ export class Route {
         } = context;
 
         const route = new Route();
-        
+
         route.from = from;
         route.to = to;
         route.distance = distance;
-        route.providers = [];
 
         return route;
     }

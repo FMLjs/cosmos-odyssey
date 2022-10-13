@@ -11,7 +11,7 @@ export class TravelService {
         private readonly httpService: HttpService,
     ) { }
 
-    async getPriceList(): Promise<IPriceList> {
+    async getPriceList() {
         const url = Config.apiUrl;
         
         const response = await firstValueFrom(this.httpService.get(url));

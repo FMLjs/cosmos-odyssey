@@ -1,6 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {Repository} from 'typeorm';
+import {SourceRequestDAO} from "../dao/SourceRequestDAO";
 import {SourceRequestDto} from '../dto/SourceRequestDto';
 import {SourceRequest} from '../entity/SourceRequest';
 
@@ -8,8 +7,7 @@ import {SourceRequest} from '../entity/SourceRequest';
 export class SourceRequestService {
 
     constructor(
-        @InjectRepository(SourceRequest)
-        private readonly sourceRequestRepository: Repository<SourceRequest>,
+        private readonly sourceRequestDao: SourceRequestDAO,
     ) { }
 
     
@@ -24,7 +22,7 @@ export class SourceRequestService {
             sourceId
         });
 
-        await this.sourceRequestRepository.save(sourceRequest);
+        await this.sourceRequestDao.save(sourceRequest);
 
         return sourceRequest;
     }

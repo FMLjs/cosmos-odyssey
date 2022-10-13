@@ -18,11 +18,11 @@ export class PriceListDAO {
         const {destination: to, origin: from, filter} = context;
         const {companyName, sort} = filter || {};
         const {field, direction} = sort || {};
-
+        
         const query = this.priceListRepository.createQueryBuilder('price_list')
-            .select()
-            .leftJoinAndMapMany('price_list.routes', 'route', 'route', 'route.price_list_id = price_list.id')
-            .leftJoinAndMapMany('route.providers', 'provider', 'provider', 'provider.route_id = route.id')
+            .innerJoinAndSelect('price_list.routeProviders', 'routeProvider')
+            .innerJoinAndSelect('routeProvider.route', 'route', 'route.id = routeProvider.route_id')
+            .innerJoinAndSelect('routeProvider.provider', 'provider', 'provider.id = routeProvider.provider_id')
             .where('price_list.id = :id', {id})
             .andWhere('route.from = :from and route.to = :to', {from, to})
             .orderBy('price_list.created_at', 'DESC');
@@ -40,8 +40,11 @@ export class PriceListDAO {
 
     findOneLatestOrFail() {
         return this.priceListRepository.createQueryBuilder('price_list')
-            .select()
             .orderBy('price_list.created_at', 'DESC')
             .getOneOrFail();
+    }
+
+    save(priceList: PriceList){
+        return this.priceListRepository.save(priceList);
     }
 }

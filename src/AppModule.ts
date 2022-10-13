@@ -12,6 +12,12 @@ import {Route} from './domain/entity/Route';
 import {SourceRequest} from './domain/entity/SourceRequest';
 import {SourceRequestService} from './domain/service/SourceRequestService';
 import {PriceListDAO} from './domain/dao/PriceListDAO';
+import {RouteProvider} from './domain/entity/RouteProvider';
+import {Reservation} from './domain/entity/Reservation';
+import {ReservationService} from './domain/service/ReservationService';
+import {SourceRequestDAO} from './domain/dao/SourceRequestDAO';
+import {RouteProviderDAO} from './domain/dao/RouteProviderDAO';
+import {ReservationDAO} from './domain/dao/ReservationDAO';
 
 @Module({
     imports: [
@@ -29,14 +35,20 @@ import {PriceListDAO} from './domain/dao/PriceListDAO';
             PriceList,
             Provider,
             Route,
-            SourceRequest
+            SourceRequest,
+            RouteProvider,
+            Reservation
         ])
     ],
     providers: [
         TravelService,
         PriceListService,
         SourceRequestService,
+        ReservationService,
+        SourceRequestDAO,
         PriceListDAO,
+        RouteProviderDAO,
+        ReservationDAO,
         {
             provide: APP_PIPE,
             useFactory: () => new ValidationPipe({

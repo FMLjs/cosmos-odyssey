@@ -9,8 +9,9 @@ import {
 } from "typeorm";
 import {v4 as generateUuid} from "uuid";
 import {PriceListDto} from "../dto/PriceListDto";
-import {RouteDto} from "../dto/RouteDto";
-import {Route} from "./Route";
+import {RouteProviderDto} from "../dto/RouteProviderDto";
+import {Reservation} from "./Reservation";
+import {RouteProvider} from "./RouteProvider";
 
 @Entity()
 export class PriceList {
@@ -27,40 +28,41 @@ export class PriceList {
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
 
-    @OneToMany(() => Route, c => c.priceList, {
+    @OneToMany(() => RouteProvider, c => c.priceList, {
         cascade: true,
-        eager: true
     })
-    routes: Route[];
+    routeProviders: RouteProvider[];
 
     @AfterLoad()
     afterLoad() {
-        if (!this.routes) {
-            this.routes = [];
+        if (!this.routeProviders) {
+            this.routeProviders = [];
         }
     }
 
-    addRoute(routeDto: RouteDto) {
-        const route = Route.create(routeDto);
+    addRouteProvider(routeProviderDto: RouteProviderDto) {
+        const {routeProvider} = routeProviderDto;
 
-        this.routes.push(route);
+        const createdRouteProvider = RouteProvider.create({routeProvider});
 
-        return route;
+        this.routeProviders.push(createdRouteProvider);
+
+        return routeProvider;
     }
 
     isLatest() {
         return new Date(this.validUntil).getTime() > new Date().getTime();
     }
-    
+
     static create(context: PriceListDto) {
         const {
             response,
         } = context;
 
         const priceList = new PriceList();
-        
+
         priceList.validUntil = response.validUntil;
-        priceList.routes = [];
+        priceList.routeProviders = [];
 
         return priceList;
     }

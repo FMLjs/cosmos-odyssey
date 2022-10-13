@@ -1,15 +1,13 @@
 import {
+    AfterLoad,
     Column,
     CreateDateColumn,
-    Entity, 
-    JoinColumn, 
-    ManyToOne, 
-    PrimaryColumn, 
+    Entity, OneToMany, PrimaryColumn,
     UpdateDateColumn
 } from 'typeorm';
 import {v4 as generateUuid} from 'uuid';
 import {ProviderDto} from '../dto/ProviderDto';
-import {Route} from './Route';
+import {RouteProvider} from './RouteProvider';
 
 @Entity()
 export class Provider {
@@ -19,7 +17,7 @@ export class Provider {
 
     @Column({name: 'company_name'})
     companyName: string;
-    
+
     @Column({
         type: 'double precision'
     })
@@ -31,15 +29,27 @@ export class Provider {
     @Column({name: 'flight_end'})
     flightEnd: Date;
 
+    @Column({
+        name: 'travel_time',
+        type: 'bigint'
+    })
+    travelTime: number;
+
     @CreateDateColumn({name: 'created_at'})
     createdAt: Date;
 
     @UpdateDateColumn({name: 'updated_at'})
     updatedAt: Date;
 
-    @ManyToOne(() => Route, (route) => route.providers)
-    @JoinColumn({ name: 'route_id' })
-    route: Route;
+    @OneToMany(() => RouteProvider, routeProvider => routeProvider.provider)
+    routeProviders: RouteProvider[];
+
+    @AfterLoad()
+    afterLoad() {
+        if (!this.routeProviders) {
+            this.routeProviders = [];
+        }
+    }
 
     static create(context: ProviderDto) {
         const {
@@ -55,6 +65,7 @@ export class Provider {
         provider.price = price;
         provider.flightStart = flightStart;
         provider.flightEnd = flightEnd;
+        provider.travelTime = new Date(flightEnd).getTime() - new Date(flightStart).getTime();
 
         return provider;
     }

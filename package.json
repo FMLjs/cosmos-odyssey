@@ -4,6 +4,9 @@
   "author": "Stepan Bogatõrjov",
   "private": true,
   "license": "",
+  "engines": {
+    "node": ">=17.1.0"
+  },
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",

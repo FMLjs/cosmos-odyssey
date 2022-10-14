@@ -60,7 +60,14 @@ export class ReservationService {
         return reservation;
     }
 
-    findOneOrFail(context: ReservationInputDto) {
-        return this.reservationDao.findOneByIdOrFail(context.reservationId);
+    async findOneOrFail(context: ReservationInputDto) {
+        try {
+            return await this.reservationDao.findOneByIdOrFail(context.reservationId);
+        } catch (e) {
+            InvalidArgumentError.ifThrow(
+                e instanceof EntityNotFoundError,
+                `Reservation for input ${JSON.stringify(context)} not found`
+            );
+        }
     }
 }

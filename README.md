@@ -48,5 +48,5 @@ Start the server
 
 ## Afterword
 
-* The system can be built using CRON, making requests every n minutes, thereby removing the need to check the relevance of the price list.
+* The system can be built using [CRON](https://docs.nestjs.com/techniques/task-scheduling), making requests every n minutes, thereby removing the need to check the relevance of the price list.
 * To optimize the current implementation of the PriceListService.findLatest function, you can return an error if the price list is out of date without creating a new price list (at the moment, if the price list is outdated, then a new one is created in the same API request), thereby reducing the number of calls to database from 2 to 1 in one execution of this function. In this case, the client must make sure that he received the price list, and in case of an error, make a second request.

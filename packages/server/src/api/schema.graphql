@@ -1,0 +1,94 @@
+type Query {
+   priceList(input: PriceListInput!): PriceList!
+   reservation(input: ReservationInput!): Reservation!
+}
+
+type Mutation {
+    createReservation(input: CreateReservationInput!): Reservation!
+}
+
+input PriceListInput {
+    origin: String!
+    destination: String!
+    filter: FilterInput
+}
+
+input FilterInput {
+    companyName: String
+    sort: SortInput
+}
+
+input SortInput {
+    field: SortField!
+    direction: SortDirection!
+}
+
+input ReservationInput {
+    reservationId: String!
+}
+
+input CreateReservationInput {
+    firstName: String!
+    lastName: String!
+    routeProviders: [RouteProvidersInput!]!
+}
+
+input RouteProvidersInput {
+    routeId: String!
+    providerId: String!
+}
+
+type PriceList {
+    id: String!
+    validUntil: String!
+    createdAt: String!
+    updatedAt: String!
+    routeProviders: [RouteProviders!]!
+}
+
+type RouteProviders {
+    id: String!
+    route: Route!
+    provider: Provider!
+}
+
+type Reservation {
+    id: String!
+    totalPrice: Float!
+    totalTravelTime: Float!
+    firstName: String!
+    lastName: String!
+    priceListId: String!
+    routeProviders: [RouteProviders!]!
+}
+
+type Route {
+    id: String!
+    from: String!
+    to: String!
+    distance: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+type Provider {
+    id: String!
+    companyName: String!
+    price: Float!
+    flightStart: String!
+    flightEnd: String!
+    travelTime: String!
+    createdAt: String!
+    updatedAt: String!
+}
+
+enum SortField {
+    price
+    distance
+    travelTime
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}

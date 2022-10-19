@@ -2,7 +2,7 @@ import {Injectable} from "@nestjs/common";
 import {PriceListInputDto} from "src/api/dto/PriceListInputDto";
 import {IllegalDomainOperationError} from "src/error/IllegalDomainOperationError";
 import {InvalidArgumentError} from "src/error/InvalidArgumentError";
-import {TravelService} from "src/infrastructure/service/TravelService";
+import {TravelService} from "src/travel/service/TravelService";
 import {SourceRequestService} from "src/source-request/domain/service/SourceRequestService";
 import {EntityNotFoundError} from 'typeorm';
 import {PriceListDAO} from "../dao/PriceListDAO";

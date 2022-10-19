@@ -1,0 +1,99 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&display=swap');
+@import "./variables";
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Manrope';
+}
+
+.dashboard {
+    flex:1;
+    display: flex;
+    justify-content: center;
+}
+
+.price-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.route-provider {
+    display: flex;
+    background-color: #E4E4E4;
+    border-radius: 25px;
+    margin: 25px;
+    padding: 25px;
+    width: 60%;
+    justify-content: space-around;
+
+    @media (max-width: 700px) {
+        flex-direction: column;
+    }
+}
+
+.card {
+    background-color: $night;
+    color: white;
+    border-radius: 25px;
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    img {
+        width: 130px;
+        height: 130px;
+
+        @media (max-width: 700px) {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    &--left {
+        display: flex;
+        flex-direction: column-reverse;
+
+        img {
+            margin-left: auto;
+        }
+    }
+
+    &--right {
+    }
+
+    &--center {
+        background: none;
+        color: $night;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        @media (max-width: 700px) {
+            flex-direction: row-reverse;
+            justify-content: space-between;
+        }
+
+        img {
+            transform: rotate(25deg);
+            width: 150px;
+            height: 150px;
+
+            @media (max-width: 700px) {
+                transform: rotate(140deg);
+                margin-bottom: 50px;
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+
+    .logo {
+        width: 60px;
+        height: 60px;
+    }
+}

@@ -2,8 +2,6 @@ query RequestKybVerification($input: PriceListInput!) {
     priceList(input: $input) {
         id
         validUntil
-        createdAt
-        updatedAt
         routeProviders {
             id
             route {
@@ -11,8 +9,6 @@ query RequestKybVerification($input: PriceListInput!) {
                 from
                 to
                 distance
-                createdAt
-                updatedAt
             }
             provider {
                 id
@@ -21,8 +17,6 @@ query RequestKybVerification($input: PriceListInput!) {
                 flightStart
                 flightEnd
                 travelTime
-                createdAt
-                updatedAt
             }
         }
     }

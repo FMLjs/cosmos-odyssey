@@ -1,5 +1,5 @@
 import React from 'react';
-import './assets/App.css';
+import './assets/styles/index.scss';
 import {useCreateApolloClient} from './hooks/useCreateApolloClient';
 import {PublicRoutes} from './routes/PublicRoutes';
 import {ApolloProvider} from '@apollo/client';

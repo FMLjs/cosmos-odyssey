@@ -1,4 +1,4 @@
-import {ApolloDriver, ApolloDriverConfig} from "@nestjs/apollo";
+import {ApolloDriver, ApolloDriverConfig} from '@nestjs/apollo';
 import {Module} from "@nestjs/common";
 import {GraphQLModule} from "@nestjs/graphql";
 import {ValidationPipe} from "src/infrastructure/filter/ValidationPipe";
@@ -13,8 +13,7 @@ import {ReservationResolver} from "./resolver/ReservationResolver";
         ReservationModule,
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
-            typePaths: ['./**/schema.graphql'],
-            playground: true
+            typePaths: ['./**/schema.graphql']
         })
     ],
     providers: [

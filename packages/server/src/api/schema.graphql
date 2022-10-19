@@ -24,7 +24,7 @@ input SortInput {
 }
 
 input ReservationInput {
-    reservationId: String!
+    reservationId: UUID!
 }
 
 input CreateReservationInput {
@@ -34,26 +34,26 @@ input CreateReservationInput {
 }
 
 input RouteProvidersInput {
-    routeId: String!
-    providerId: String!
+    routeId: UUID!
+    providerId: UUID!
 }
 
 type PriceList {
-    id: String!
-    validUntil: String!
-    createdAt: String!
-    updatedAt: String!
+    id: UUID!
+    validUntil: DateTime!
+    createdAt: DateTime!
+    updatedAt: DateTime!
     routeProviders: [RouteProviders!]!
 }
 
 type RouteProviders {
-    id: String!
+    id: UUID!
     route: Route!
     provider: Provider!
 }
 
 type Reservation {
-    id: String!
+    id: UUID!
     totalPrice: Float!
     totalTravelTime: Float!
     firstName: String!
@@ -63,23 +63,23 @@ type Reservation {
 }
 
 type Route {
-    id: String!
+    id: UUID!
     from: String!
     to: String!
     distance: String!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type Provider {
-    id: String!
+    id: UUID!
     companyName: String!
     price: Float!
-    flightStart: String!
-    flightEnd: String!
+    flightStart: DateTime!
+    flightEnd: DateTime!
     travelTime: String!
-    createdAt: String!
-    updatedAt: String!
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 enum SortField {
@@ -92,3 +92,6 @@ enum SortDirection {
     ASC
     DESC
 }
+
+scalar DateTime
+scalar UUID

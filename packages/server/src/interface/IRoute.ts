@@ -4,5 +4,5 @@ import {IRouteInfo} from "./IRouteInfo"
 export interface IRoute {
     id: string
     routeInfo: IRouteInfo
-    providers: [IProvider]
+    providers: IProvider[]
 }

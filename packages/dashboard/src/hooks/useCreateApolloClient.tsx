@@ -9,7 +9,7 @@ export function useCreateApolloClient() {
         link: new HttpLink({
             uri: Config.dataUri
         }),
-        cache: new InMemoryCache({addTypename: false}),
+        cache: new InMemoryCache(),
         defaultOptions: {
             watchQuery: {
                 fetchPolicy: 'network-only'

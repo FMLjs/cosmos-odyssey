@@ -1,20 +1,22 @@
-import {useQuery} from "@apollo/client";
-import {loader} from 'graphql.macro';
+import {useLazyQuery} from "@apollo/client";
+import Q from '../../graphql/price-list/PriceList.query.graphql';
+import {IFilter} from "../../types/IFilter";
+import {IPriceList} from "../../types/IPriceList";
+
+type PriceListInput = {
+    origin: string,
+    destination: string,
+    filter?: IFilter
+}
 
 export function usePriceListQuery() {
-    const query = loader('../../graphql/price-list/PriceList.query.graphql');
-    console.log(query)
-    const {data: {priceList = {}} = {}, ...others} = useQuery(query, {
-        variables: {
-            input: {
-                origin: 'Earth',
-                destination: 'Uranus'
-            }
-        }
-    });
-    console.log(priceList)
+    const [execute, {data, ...others}] = useLazyQuery(Q);
+    
     return {
-        data: priceList,
-        ...others
-    };
+        load: (input: PriceListInput) => execute({variables: {input}}),
+        payload: {
+            data: data?.priceList as IPriceList,
+            ...others
+        }
+    }
 }

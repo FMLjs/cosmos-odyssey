@@ -1,46 +1,52 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Cosmos Odyssey
 
-## Available Scripts
+Web App called “Cosmos Odyssey” that shows the best deals for our demanding customers in our solar system. Customers must be able to select travel between the different planets and the system should show possible routes-based prices. After careful consideration customer can choose to make a reservation to their name on a specific route.
+## Prerequisites
 
-In the project directory, you can run:
+* Git - [Download & Install Git](https://git-scm.com/downloads). OSX and Linux machines typically have this already installed.
+* Node.js - [Download & Install Node.js](https://nodejs.org/en/download/current/) (version should be >=17.1.0) and the [yarn package manager](https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable). 
+* Nest CLI - [Download & Install NestJs CLI](https://docs.nestjs.com/cli/overview) (Installation part)
+* PostgreSQL - [Download & Install PostgreSQL](https://www.postgresql.org/download/). You can also use [Docker](https://www.docker.com) to install postgres. I provided a ready-made [compose file](https://github.com/FMLjs/cosmos-odyssey/blob/main/docker-compose.yml), which is located in the root derictory of the project. Use "docker-compose -f {path_to_compose_file} up" command in your terminal to create postgres container.
 
-### `npm start`
+## Run Locally
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Clone the project
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```bash
+  git clone https://github.com/FMLjs/cosmos-odyssey.git
+```
 
-### `npm test`
+Go to the project directory
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+  cd cosmos-odyssey
+```
 
-### `npm run build`
+Prepare environment file
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Create a new .env file in the root directory of the project. Copy the contents of the .env.example file into your newly created .env file and replace the properties TYPEORM_USERNAME, TYPEORM_PASSWORD, TYPEORM_DATABASE, TYPEORM_PORT with the settings on your local system.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Install dependencies
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+  yarn install
+```
 
-### `npm run eject`
+Run migrations (this will create all project tables in your postgres database)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```bash
+  yarn migration:run
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Start the server
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+  yarn start:dev
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+## Afterword
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+* The system can be built using [CRON](https://docs.nestjs.com/techniques/task-scheduling), making requests every n minutes, thereby removing the need to check the relevance of the price list.
+* To optimize the current implementation of the PriceListService.findLatest function, you can return an error if the price list is out of date without creating a new price list (at the moment, if the price list is outdated, then a new one is created in the same API request), thereby reducing the number of calls to database from 2 to 1 in one execution of this function. In this case, the client must make sure that he received the price list, and in case of an error, make a second request.

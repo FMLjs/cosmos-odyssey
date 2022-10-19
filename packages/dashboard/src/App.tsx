@@ -1,18 +1,15 @@
 import React from 'react';
-import './assets/styles/index.scss';
-import {useCreateApolloClient} from './hooks/useCreateApolloClient';
-import {PublicRoutes} from './routes/PublicRoutes';
 import {ApolloProvider} from '@apollo/client';
-import {BrowserRouter} from 'react-router-dom';
+import './assets/styles/index.scss';
+import {Dashboard} from './component/Dashboard';
+import {useCreateApolloClient} from './hooks/useCreateApolloClient';
 
 function App() {
     const client = useCreateApolloClient();
 
     return (
         <ApolloProvider client={client as any}>
-            <BrowserRouter basename="/">
-                <PublicRoutes />
-            </BrowserRouter>
+            <Dashboard />
         </ApolloProvider>
     );
 }

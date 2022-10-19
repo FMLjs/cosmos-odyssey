@@ -8,9 +8,10 @@
 }
 
 .dashboard {
-    flex:1;
+    flex: 1;
     display: flex;
     justify-content: center;
+    flex-direction: column; 
 }
 
 .price-list {
@@ -20,24 +21,84 @@
     flex: 1;
 }
 
+.reservation-creation-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
 .route-provider {
     display: flex;
-    background-color: #E4E4E4;
-    border-radius: 25px;
-    margin: 25px;
-    padding: 25px;
+    flex-direction: column;
     width: 60%;
-    justify-content: space-around;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 25px;
+    margin-bottom: 10px;
 
     @media (max-width: 700px) {
-        flex-direction: column;
+        width: 100%;
+    }
+
+    &-body {
+        display: flex;
+        background-color: #e0e5ee;
+        border-radius: $main-border-radius;
+        padding: 25px;
+        justify-content: space-around;
+        width: 100%;
+        min-width: 500px;
+        margin-bottom: 10px;
+
+        @media (max-width: 700px) {
+            min-width: none;
+            flex-direction: column;
+        }
+    
+        @media (max-width: 1366px) {
+            width: 80%;
+        }
+    }
+
+    &-button {
+        position:relative;
+        width: 100%;
+        padding: 15px;
+        font-size: 20px;
+        color: white;
+        border-radius: $main-border-radius;
+
+        @media (max-width: 1366px) {
+            width: 80%;
+        }
+
+        &--add {
+            background-color: $success;
+        }
+
+        &--add:hover {
+            background-color: $success-hover;
+        }
+
+        &--delete {
+            background-color: $danger;
+        }
+
+        &--delete:hover {
+            background-color: $danger-hover;
+        }
+    }
+
+    &-button:hover {
+        cursor: pointer;
     }
 }
 
 .card {
     background-color: $night;
     color: white;
-    border-radius: 25px;
+    border-radius: $main-border-radius;
     padding: 20px;
     flex: 1;
     display: flex;
@@ -60,10 +121,19 @@
 
         img {
             margin-left: auto;
+
+            @media (max-width: 700px) {
+                margin-top: 20px;
+            }
         }
     }
 
     &--right {
+        img {
+            @media (max-width: 700px) {
+                margin-bottom: 20px;
+            }
+        }
     }
 
     &--center {
@@ -75,7 +145,7 @@
 
         @media (max-width: 700px) {
             flex-direction: row-reverse;
-            justify-content: space-between;
+            justify-content: space-around;
         }
 
         img {
@@ -84,10 +154,10 @@
             height: 150px;
 
             @media (max-width: 700px) {
-                transform: rotate(140deg);
-                margin-bottom: 50px;
-                width: 100px;
-                height: 100px;
+                transform: rotate(160deg);
+                margin-bottom: 20px;
+                width: 70px;
+                height: 70px;
             }
         }
     }
@@ -96,4 +166,20 @@
         width: 60px;
         height: 60px;
     }
+}
+
+.react-tabs__tab--selected {
+    padding: 20px !important;
+    background-color: $space-cadet !important;
+    color: white !important;
+    border: none !important;
+}
+
+.react-tabs__tab-list {
+    background-color: $oxford-blue;
+    color: white;
+}
+
+.label-number {
+    color: $success
 }

@@ -1,14 +1,14 @@
 import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class init1665675673274 implements MigrationInterface {
-    name = 'init1665675673274'
+export class init1666346267264 implements MigrationInterface {
+    name = 'init1666346267264'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "provider" ("id" character varying NOT NULL, "company_name" character varying NOT NULL, "price" double precision NOT NULL, "flight_start" TIMESTAMP NOT NULL, "flight_end" TIMESTAMP NOT NULL, "travel_time" bigint NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_6ab2f66d8987bf1bfdd6136a2d5" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "provider" ("id" character varying NOT NULL, "company_name" character varying NOT NULL, "price" bigint NOT NULL, "flight_start" TIMESTAMP NOT NULL, "flight_end" TIMESTAMP NOT NULL, "travel_time" bigint NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_6ab2f66d8987bf1bfdd6136a2d5" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "route" ("id" character varying NOT NULL, "from" character varying NOT NULL, "to" character varying NOT NULL, "distance" bigint NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_08affcd076e46415e5821acf52d" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "route_provider" ("id" character varying NOT NULL, "route_id" character varying, "provider_id" character varying, "price_list_id" character varying, CONSTRAINT "PK_9ece7a566ee056427b6ee587b9f" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "price_list" ("id" character varying NOT NULL, "valid_until" TIMESTAMP NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_52ea7826468b1c889cb2c28df03" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "reservation" ("id" character varying NOT NULL, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "total_price" double precision NOT NULL, "total_travel_time" bigint NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "price_list_id" character varying NOT NULL, CONSTRAINT "PK_48b1f9922368359ab88e8bfa525" PRIMARY KEY ("id"))`);
+        await queryRunner.query(`CREATE TABLE "reservation" ("id" character varying NOT NULL, "first_name" character varying NOT NULL, "last_name" character varying NOT NULL, "total_price" bigint NOT NULL, "total_travel_time" bigint NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "price_list_id" character varying NOT NULL, CONSTRAINT "PK_48b1f9922368359ab88e8bfa525" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "source_request" ("id" character varying NOT NULL, "original_response" json NOT NULL, "created_at" TIMESTAMP NOT NULL DEFAULT now(), "updated_at" TIMESTAMP NOT NULL DEFAULT now(), "source_id" character varying NOT NULL, CONSTRAINT "PK_23ab9d8bf3adae6c4433f0ce731" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE TABLE "reservation_route_provider" ("reservation_id" character varying NOT NULL, "route_provider_id" character varying NOT NULL, CONSTRAINT "PK_39ccebfc3292c4ba32f773de542" PRIMARY KEY ("reservation_id", "route_provider_id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_f7b4d51232bdfb8d9b51b3cbf2" ON "reservation_route_provider" ("reservation_id") `);

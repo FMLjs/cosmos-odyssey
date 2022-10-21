@@ -1,3 +1,4 @@
+import {MoneyUtils} from 'src/utils/MoneyUtils';
 import {
     AfterLoad,
     Column,
@@ -18,9 +19,7 @@ export class Provider {
     @Column({name: 'company_name'})
     companyName: string;
 
-    @Column({
-        type: 'double precision'
-    })
+    @Column({type: 'bigint'})
     price: number;
 
     @Column({name: 'flight_start'})
@@ -60,9 +59,8 @@ export class Provider {
         } = context;
 
         const provider = new Provider();
-
         provider.companyName = companyName;
-        provider.price = price;
+        provider.price = MoneyUtils.toCent(price);
         provider.flightStart = flightStart;
         provider.flightEnd = flightEnd;
         provider.travelTime = new Date(flightEnd).getTime() - new Date(flightStart).getTime();

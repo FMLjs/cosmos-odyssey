@@ -23,7 +23,7 @@ export class Reservation {
     lastName: string;
 
     @Column({
-        type: 'double precision',
+        type: 'bigint',
         name: 'total_price'
     })
     totalPrice: number = 0;
@@ -64,10 +64,10 @@ export class Reservation {
         } = context;
         
         //Need to convert to number as postgres converts bigint to string
-        this.totalPrice = Math.round((this.totalPrice + Number(provider.price)) * 100) / 100;
+        this.totalPrice = Number(this.totalPrice) + Number(provider.price);
         this.totalTravelTime = Math.round((this.totalTravelTime + Number(provider.travelTime)) * 100) / 100;
         this.routeProviders.push(context);
-
+        
         return context;
     };
 

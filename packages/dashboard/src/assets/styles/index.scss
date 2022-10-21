@@ -7,25 +7,44 @@
     font-family: 'Manrope';
 }
 
-.dashboard {
-    flex: 1;
+.container {
     display: flex;
+    flex: 1;
     justify-content: center;
     flex-direction: column; 
 }
 
-.price-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
+.dashboard {
+    flex-direction: column; 
 }
 
-.reservation-creation-form {
-    display: flex;
-    flex-direction: column;
+.price-list {
     align-items: center;
-    flex: 1;
+}
+
+.reservation-creation {
+    align-items: center;
+}
+
+.reservations {
+    align-items: center;
+}
+
+.reservation {
+    align-items: center;
+    width: 70%;
+    margin: 20px 0;
+    border: 1px solid $night;    
+    border-radius: $main-border-radius;
+    padding-top: 20px;
+
+    @media (max-width: 800px) {
+        width: 90%;
+    }
+
+    .route-provider {
+        width: 85%;
+    }
 }
 
 .route-provider {
@@ -37,7 +56,7 @@
     padding: 25px;
     margin-bottom: 10px;
 
-    @media (max-width: 700px) {
+    @media (max-width: 930px) {
         width: 100%;
     }
 
@@ -48,7 +67,6 @@
         padding: 25px;
         justify-content: space-around;
         width: 100%;
-        min-width: 500px;
         margin-bottom: 10px;
 
         @media (max-width: 700px) {
@@ -88,10 +106,19 @@
         &--delete:hover {
             background-color: $danger-hover;
         }
+
+        &--none {
+            display: none;
+        }
     }
 
     &-button:hover {
         cursor: pointer;
+    }
+
+    &-button:disabled {
+        background-color: rgb(175, 175, 175);
+        cursor: default;
     }
 }
 
@@ -159,6 +186,11 @@
                 width: 70px;
                 height: 70px;
             }
+
+            @media (max-width: 1112px) {
+                width: 100px;
+                height: 100px;
+            }
         }
     }
 
@@ -170,16 +202,109 @@
 
 .react-tabs__tab--selected {
     padding: 20px !important;
-    background-color: $space-cadet !important;
+    background-color: $indigo-dye !important;
     color: white !important;
     border: none !important;
 }
 
 .react-tabs__tab-list {
-    background-color: $oxford-blue;
+    background-color: $night;
     color: white;
+}
+
+.react-tabs__tab-list {
+    margin-bottom: 30px !important;
 }
 
 .label-number {
     color: $success
+}
+
+.form-container {
+    background-color: $night;
+    color: white;
+    border-radius: $main-border-radius;
+    padding: 20px;
+    width: 60%;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+
+        button {
+            padding: 10px;
+            width: 50%;
+            border-radius: $additional-border-radius;
+        }
+    }
+
+    .error {
+        width: 80%;
+        margin-top: 0;
+    }
+}
+
+.registered-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 80%;
+
+    @media (max-width: 700px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    label {
+        margin-right: 10px;
+        white-space: nowrap;
+
+        @media (max-width: 700px) {
+            margin-bottom: 10px;
+        }
+    }
+
+    input {
+        padding: 10px;
+        border-radius: $additional-border-radius;
+        width: 100%;
+    }
+
+    select {
+        padding: 10px;
+        width: 100%;
+        border-radius: $additional-border-radius;
+        height: 40px;
+    }
+    &-option {
+        padding: 10px;
+    }
+}
+
+.error {
+    background-color: $warning;
+    width: 60%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: $additional-border-radius;
+    margin-top: 20px;
+    color: white;
+}
+
+.loader {
+    margin-top: 30px;
+}
+
+.empty-message {
+    margin-top: 20px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.total {
+    font-size: 20px;
+    margin-top: 20px;
 }

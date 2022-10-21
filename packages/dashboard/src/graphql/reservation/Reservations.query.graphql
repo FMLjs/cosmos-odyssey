@@ -1,0 +1,27 @@
+query Reservations($input: ReservationsInput!) {
+    reservations(input: $input) {
+        id
+        totalPrice
+        totalTravelTime
+        firstName
+        lastName
+        priceListId
+        routeProviders {
+            id
+            route {
+                id
+                from
+                to
+                distance
+            }
+            provider {
+                id
+                companyName
+                price
+                flightStart
+                flightEnd
+                travelTime
+            }
+        }
+    }
+}

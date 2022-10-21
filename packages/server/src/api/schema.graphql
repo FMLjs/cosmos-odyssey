@@ -1,6 +1,6 @@
 type Query {
-   priceList(input: PriceListInput!): PriceList!
-   reservation(input: ReservationInput!): Reservation!
+    priceList(input: PriceListInput!): PriceList!
+    reservations(input: ReservationsInput!): [Reservation]!
 }
 
 type Mutation {
@@ -23,14 +23,15 @@ input SortInput {
     direction: SortDirection!
 }
 
-input ReservationInput {
-    reservationId: UUID!
+input ReservationsInput {
+    firstName: String!
+    lastName: String!
 }
 
 input CreateReservationInput {
     firstName: String!
     lastName: String!
-    routeProviders: [RouteProvidersInput!]!
+    routeProvidersIds: [UUID!]!
 }
 
 input RouteProvidersInput {
@@ -54,8 +55,8 @@ type RouteProviders {
 
 type Reservation {
     id: UUID!
-    totalPrice: Float!
-    totalTravelTime: Float!
+    totalPrice: String!
+    totalTravelTime: String!
     firstName: String!
     lastName: String!
     priceListId: String!
@@ -74,7 +75,7 @@ type Route {
 type Provider {
     id: UUID!
     companyName: String!
-    price: Float!
+    price: String!
     flightStart: DateTime!
     flightEnd: DateTime!
     travelTime: String!

@@ -38,7 +38,7 @@ export class PriceListService {
         } catch (e) {
             InvalidArgumentError.ifThrow(
                 e instanceof EntityNotFoundError,
-                `Price list for input ${JSON.stringify(context)} not found`
+                'Price list not found'
             );
         }
 

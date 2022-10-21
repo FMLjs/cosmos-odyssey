@@ -15,7 +15,7 @@ export const Card: React.FC<Props> = (props) => {
 
     return (
         <div className={`card card--${side}`}>
-            <img src={`/images/${object.toLowerCase()}.png`} />
+            <img src={`/images/${object.toLowerCase()}.png`} alt=''/>
             {children}
         </div>
     );

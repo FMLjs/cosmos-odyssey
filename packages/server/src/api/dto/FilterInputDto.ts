@@ -6,7 +6,6 @@ export class FilterInputDto {
     
     @IsOptional()
     @IsString()
-    @IsNotEmpty()
     readonly companyName?: string;
 
     @IsOptional()

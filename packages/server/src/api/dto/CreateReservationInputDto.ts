@@ -1,15 +1,4 @@
-import {Type} from "class-transformer";
-import {IsArray, IsNotEmpty, IsString, IsUUID, ValidateNested} from "class-validator";
-
-class RouteProviderInput {
-    @IsUUID()
-    @IsNotEmpty()
-    readonly routeId: string;
-
-    @IsUUID()
-    @IsNotEmpty()
-    readonly providerId: string;
-}
+import {IsArray, IsNotEmpty, IsString, IsUUID} from "class-validator";
 
 export class CreateReservationInputDto {
     @IsString()
@@ -20,9 +9,7 @@ export class CreateReservationInputDto {
     @IsNotEmpty()
     readonly lastName: string;
 
-    @Type(() => RouteProviderInput)
+    @IsUUID(4, {each: true})
     @IsArray()
-    @ValidateNested()
-    @IsNotEmpty()
-    readonly routeProviders: RouteProviderInput[];
+    readonly routeProvidersIds: string[]
 }

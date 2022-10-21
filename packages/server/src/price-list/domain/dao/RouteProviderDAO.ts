@@ -12,17 +12,8 @@ export class RouteProviderDAO {
     ) {
     }
 
-    findOneByOrderIdAndProviderIdOrFail(orderId: string, providerId: string) {
-        return this.routeProviderRepository.findOneOrFail({
-            where: {
-                route: {
-                    id: orderId
-                },
-                provider: {
-                    id: providerId
-                }
-            }
-        })
+    findOneByIdOrFail(id: string){
+        return this.routeProviderRepository.findOneOrFail(id);
     }
 
     save(routeProvider: RouteProvider){

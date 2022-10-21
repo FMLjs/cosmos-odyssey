@@ -1,56 +1,63 @@
 import React, {useEffect, useState} from 'react';
-import {usePriceListQuery} from '../hooks/price-list/usePriceListQuery';
-import {Loader} from './loader/Loader';
-import {PriceList} from './price-list/PriceList';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import {Tab, TabList, TabPanel, Tabs} from 'react-tabs';
 import 'react-tabs/style/react-tabs.scss';
-import {ReservationCreationForm} from './reservation/ReservationCreationForm';
-import {Reservations} from './reservation/Reservations';
+import {IPriceList} from '../types/IPriceList';
 import {IRouteProvider} from '../types/IRouteProvider';
+import {PriceList} from './price-list/PriceList';
+import {ReservationCreation} from './reservation/ReservationCreation';
+import {Reservations} from './reservation/Reservations';
 
 export const Dashboard: React.FC = () => {
-    const {load, payload: {data, loading, error}} = usePriceListQuery();
     const [addedRouteProvider, setAddedRouteProvider] = useState<IRouteProvider[]>([]);
+    const [currentPriceList, setCurrentPriceList] = useState<IPriceList | undefined>();
 
     useEffect(() => {
-        load({
-            origin: 'Earth',
-            destination: 'Jupiter',
-        })
-    }, []);
+        if (!!currentPriceList?.validUntil) {
+            const priceListExpiresin = new Date(currentPriceList.validUntil).getTime() - new Date().getTime();
 
-    if (error) {
-        return <></>
-    } else if (!data) {
-        return <></>
-    } else if (loading) {
-        return <Loader loading={loading} />
-    }
+            const timer = setTimeout(() => clear(), priceListExpiresin);
+
+            return () => clearTimeout(timer);
+        }
+    }, [currentPriceList]);
 
     const addRouteProvider = (routeProvider: IRouteProvider) => setAddedRouteProvider(prevValue => [...prevValue, routeProvider]);
     
-    const removeRoteProvider = (index: number) => {
-        addedRouteProvider.splice(index, 1);
-        setAddedRouteProvider(addedRouteProvider);
+    const removeRouteProvider = (index: number) => {
+        const oldArray = [...addedRouteProvider];
+
+        oldArray.splice(index, 1);
+
+        setAddedRouteProvider(oldArray);
     }
+    
     const addedRouteProvidersLength = addedRouteProvider.length;
 
+    const clear = () => {
+        setAddedRouteProvider([]);
+        setCurrentPriceList(undefined);
+    };
+
     return (
-        <div className="dashboard">
+        <div className="container dashboard">
             <Tabs>
                 <TabList>
                     <Tab>Price list</Tab>
-                    <Tab>Create reservation <span className='label-number'>{addedRouteProvidersLength}</span></Tab>
+                    <Tab>
+                        Create reservation <span className='label-number'>{addedRouteProvidersLength}</span>
+                    </Tab>
                     <Tab>Reservations</Tab>
                 </TabList>
 
                 <TabPanel>
-                    <PriceList priceList={data}
-                               onClick={addRouteProvider} />
+                    <PriceList addRouteProvider={addRouteProvider}
+                               currentPriceList={currentPriceList}
+                               setCurrentPriceList={setCurrentPriceList} />
                 </TabPanel>
                 <TabPanel>
-                    <ReservationCreationForm routeProviders={addedRouteProvider}
-                                             onClick={addRouteProvider}/>
+                    <ReservationCreation routeProviders={addedRouteProvider}
+                                         removeRouteProvider={removeRouteProvider}
+                                         clear={clear} />
                 </TabPanel>
                 <TabPanel>
                     <Reservations/>

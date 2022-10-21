@@ -1,25 +1,25 @@
 import React from 'react';
 import {FormProvider, useForm} from "react-hook-form";
-import {useCreateReservationMutation} from '../../hooks/reservation/useCreateReservationMutation';
-import {ICreateReservationInput} from '../../types/ICreateReservationInput';
-import {IRouteProvider} from '../../types/IRouteProvider';
+import {useReservationsLazyQuery} from '../../hooks/reservation/useReservationsLazyQuery';
+import {IReservation} from '../../types/IReservation';
+import {IReservationInput} from '../../types/IReservationInput';
 import {reservation} from '../../validation/resolvers/reservation';
 import {Button} from '../ui-kit/Button';
 import {RegisteredInput} from '../ui-kit/RegisteredInput';
 
 interface Props {
-    routeProviders: IRouteProvider[],
-    clear: () => void
+    setFoundReservations: (reservations: IReservation[]) => void
 };
 
-export const ReservationCreationForm: React.FC<Props> = (props) => {
+export const ReservationsForm: React.FC<Props> = (props) => {
     const {
-        routeProviders,
-        clear
+        setFoundReservations
     } = props;
-    
-    const {create, payload: {loading}} = useCreateReservationMutation();
-    const form = useForm<ICreateReservationInput>({
+
+    const {load, payload: {loading}} = useReservationsLazyQuery({
+        setFoundReservations
+    });
+    const form = useForm<IReservationInput>({
         mode: 'onSubmit',
         reValidateMode: 'onSubmit',
         shouldUnregister: true,
@@ -31,16 +31,9 @@ export const ReservationCreationForm: React.FC<Props> = (props) => {
         handleSubmit,
     } = form;
 
-    const routeProvidersIds = routeProviders.map(({id}) => id);
-    const hasAddedRouteProviders = !!routeProviders.length;
-
     const handleSubmitForm = handleSubmit(async (context) => {
         try {
-            await create({
-                ...context,
-                routeProvidersIds
-            });
-            clear();
+            load(context);
             reset();
         } catch (e) {}
     });
@@ -57,8 +50,8 @@ export const ReservationCreationForm: React.FC<Props> = (props) => {
 
                     <Button className='route-provider-button route-provider-button--add'
                             type='submit'
-                            text='Reserve'
-                            disabled={loading || !hasAddedRouteProviders} />
+                            text='Search'
+                            disabled={loading} />
                 </form>
             </FormProvider>
         </div>

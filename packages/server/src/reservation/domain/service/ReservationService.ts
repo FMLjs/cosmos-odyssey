@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {CreateReservationInputDto} from "src/api/dto/CreateReservationInputDto";
-import {ReservationInputDto} from "src/api/dto/ReservationInputDto";
+import {ReservationsInputDto} from "src/api/dto/ReservationsInputDto";
 import {IllegalDomainOperationError} from 'src/error/IllegalDomainOperationError';
 import {InvalidArgumentError} from 'src/error/InvalidArgumentError';
 import {RouteProviderDAO} from "src/price-list/domain/dao/RouteProviderDAO";
@@ -23,7 +23,7 @@ export class ReservationService {
         const {
             firstName,
             lastName,
-            routeProviders
+            routeProvidersIds
         } = context;
 
         const priceList = await this.priceListService.findOneLatestOrFail();
@@ -37,14 +37,14 @@ export class ReservationService {
 
         try {
             existingRouteProviders = await Promise.all(
-                routeProviders.map(async ({providerId, routeId}) => {
-                    return await this.routeProviderService.findOneByOrderIdAndProviderIdOrFail(routeId, providerId);
+                routeProvidersIds.map(async (routeProviderId) => {
+                    return await this.routeProviderService.findOneByIdOrFail(routeProviderId);
                 })
             );
         } catch (e) {
             InvalidArgumentError.ifThrow(
                 e instanceof EntityNotFoundError,
-                `Route providers for input ${JSON.stringify(routeProviders)} not found`
+                'Route providers not found'
             );
         }
         
@@ -61,13 +61,13 @@ export class ReservationService {
         return reservation;
     }
 
-    async findOneOrFail(context: ReservationInputDto) {
+    async findByfirstNameAndLastName(context: ReservationsInputDto) {
         try {
-            return await this.reservationDao.findOneByIdOrFail(context.reservationId);
+            return await this.reservationDao.findByfirstNameAndLastName(context);
         } catch (e) {
             InvalidArgumentError.ifThrow(
                 e instanceof EntityNotFoundError,
-                `Reservation for input ${JSON.stringify(context)} not found`
+                `Reservation not found`
             );
         }
     }

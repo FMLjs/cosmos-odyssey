@@ -1,27 +1,27 @@
-import moment from 'moment';
 import React from 'react';
 import {IRouteProvider} from '../../types/IRouteProvider';
+import {convertMillisecondsToDaysAndHours} from '../../utils/convertMillisecondsToDaysAndHours';
+import {Button} from '../ui-kit/Button';
 import {FormattedDate} from '../ui-kit/FormattedDate';
+import {Money} from '../ui-kit/Money';
 import {Card} from './Card';
 
 interface Props {
     routeProvider: IRouteProvider
-    mode: 'add' | 'delete',
-    onClick: (routeProvider: IRouteProvider) => void
+    mode: 'add' | 'delete' | 'none',
+    handleButtonClick?: () => void
 };
 
 export const RouteProvider: React.FC<Props> = (props) => {
     const {
         routeProvider,
-        onClick,
+        handleButtonClick,
         mode
     } = props;
 
     const {route, provider} = routeProvider;
-    const duration = moment.duration(provider.travelTime, 'milliseconds');
-    const travelTimeInDays = duration.asDays();
 
-    const handleClick = () => onClick(routeProvider);
+    const travelTime = convertMillisecondsToDaysAndHours(provider.travelTime);
 
     return (
         <div className='route-provider'>
@@ -32,7 +32,7 @@ export const RouteProvider: React.FC<Props> = (props) => {
                         <p>From: {route.from}</p>
                         <p>
                             Flight start:
-                            <FormattedDate isTimeVisible={true}>{provider.flightStart}</FormattedDate>
+                            <FormattedDate isTimeVisible>{provider.flightStart}</FormattedDate>
                         </p>
                     </div>
                 </Card>
@@ -42,8 +42,8 @@ export const RouteProvider: React.FC<Props> = (props) => {
                     <div>
                         <p>Company name: {provider.companyName}</p>
                         <p>Distance: {route.distance}</p>
-                        <p>Travel time: {travelTimeInDays}</p>
-                        <p>Price: {provider.price}</p>
+                        <p>Travel time: {travelTime.days} days {travelTime.hours} hours</p>
+                        <p>Price: <Money value={provider.price} /></p>
                     </div>
                 </Card>
 
@@ -58,10 +58,10 @@ export const RouteProvider: React.FC<Props> = (props) => {
                     </div>
                 </Card>
             </div>
-            <button className={`route-provider-button route-provider-button--${mode}`}
-                    onClick={handleClick} >
-                {mode === 'add' ? 'Add' : 'Delete'}
-            </button>
+            <Button className={`route-provider-button route-provider-button--${mode}`}
+                    onClick={handleButtonClick} 
+                    type='button'
+                    text={mode === 'add' ? 'Add' : 'Delete'}/>
         </div>
     );
 }

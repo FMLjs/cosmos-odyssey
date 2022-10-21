@@ -1,7 +1,7 @@
 import {Args, Mutation, Query, Resolver} from '@nestjs/graphql';
 import {ReservationService} from 'src/reservation/domain/service/ReservationService';
 import {CreateReservationInputDto} from '../dto/CreateReservationInputDto';
-import {ReservationInputDto} from '../dto/ReservationInputDto';
+import {ReservationsInputDto} from '../dto/ReservationsInputDto';
 
 @Resolver()
 export class ReservationResolver {
@@ -16,7 +16,7 @@ export class ReservationResolver {
     }
 
     @Query()
-    reservation(@Args('input') input: ReservationInputDto) {
-        return this.reservationService.findOneOrFail(input);
+    reservations(@Args('input') input: ReservationsInputDto) {
+        return this.reservationService.findByfirstNameAndLastName(input);
     }
 }
